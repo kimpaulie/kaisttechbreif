@@ -1,0 +1,83 @@
+{
+  "id": "2026-05-25",
+  "volumeNumber": 87,
+  "publishedAt": "2026-05-25T06:30:00+09:00",
+  "dayOfWeek": "월",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "Nvidia, 사상 첫 시가총액 5조 달러 돌파",
+      "summary": "엔비디아가 GTC 기조연설 직후 주가가 4.2% 급등하며 사상 처음으로 시가총액 5조 달러를 돌파하였습니다. 메타, 마이크로소프트, 구글이 연이어 대규모 데이터센터 발주를 발표한 것이 직접적인 배경이 되었습니다. 이번 흐름은 SK하이닉스와 삼성전자가 주도하는 한국 HBM 공급망에도 즉각적인 파급 효과를 주고 있습니다.",
+      "sources": [
+        { "name": "Financial Times", "url": "https://www.ft.com" },
+        { "name": "Bloomberg", "url": "https://www.bloomberg.com" },
+        { "name": "CNBC", "url": "https://www.cnbc.com" }
+      ]
+    },
+    {
+      "order": 2,
+      "title": "OpenAI, 한국에 첫 아시아 데이터센터 설립",
+      "summary": "샘 올트먼 CEO가 방한 일정 중 약 30억 달러 규모의 한국 데이터센터 투자 계획을 공식 발표하였습니다. 이는 한국 정부가 추진 중인 AI 인프라 보조금 패키지와 직접 연계된 것으로 알려져 있으며, 아시아 지역의 첫 번째 자체 데이터센터입니다. 국내 클라우드 및 전력 인프라 기업들에게 의미 있는 새로운 사업 기회가 열릴 것으로 전망됩니다.",
+      "sources": [
+        { "name": "Reuters", "url": "https://www.reuters.com" },
+        { "name": "The Wall Street Journal", "url": "https://www.wsj.com" }
+      ]
+    },
+    {
+      "order": 3,
+      "title": "삼성전자, 2nm 파운드리 양산 일정 6개월 앞당겨",
+      "summary": "삼성전자가 TSMC와의 격차를 줄이기 위해 2nm 파운드리 양산 일정을 당초보다 6개월 앞당기기로 결정하였습니다. 화성 캠퍼스 P4 라인을 2026년 4분기까지 가동한다는 계획이며, 공정 안정화가 핵심 과제로 꼽힙니다. 퀄컴과 엔비디아의 추가 수주 확보 여부가 이번 결정의 성공을 좌우할 가장 중요한 변수입니다.",
+      "sourceName": "Bloomberg",
+      "sourceUrl": "https://www.bloomberg.com"
+    },
+    {
+      "order": 4,
+      "title": "애플, Vision Pro 후속 모델 가격 절반으로",
+      "summary": "애플이 Vision Pro의 가격을 절반 수준인 1,799달러로 낮춘 후속 모델을 오는 9월에 출시할 예정입니다. 팀 쿡 CEO는 이번 신제품을 두고 \"공간 컴퓨팅 대중화의 원년이 될 것\"이라고 언급하였습니다. 부품 단순화와 더불어 한국 및 중국 부품 협력사의 비중을 크게 확대한 것이 가격 인하의 핵심 요인으로 분석됩니다.",
+      "sourceName": "The Information",
+      "sourceUrl": "https://www.theinformation.com"
+    },
+    {
+      "order": 5,
+      "title": "쿠팡, 동남아 진출 본격화… 인도네시아 첫 발",
+      "summary": "쿠팡이 인도네시아 현지 물류기업인 J&T와 합작법인을 설립하며 동남아시아 시장에 본격적으로 진출합니다. 김범석 의장은 \"한국에서 성공시킨 로켓배송 모델을 그대로 이식할 계획\"이라고 밝혔습니다. 동남아 이커머스 시장의 강자인 Sea Group과 Lazada와의 정면 승부가 불가피할 것으로 예상됩니다.",
+      "sourceName": "한국경제",
+      "sourceUrl": "https://www.hankyung.com"
+    },
+    {
+      "order": 6,
+      "title": "EU AI Act 본격 시행, 글로벌 컴플라이언스 비상",
+      "summary": "EU AI Act의 고위험 AI 시스템 의무 조항이 오늘부터 본격적으로 발효되었습니다. 규정을 위반할 경우 글로벌 매출의 최대 7%에 해당하는 과징금이 부과될 수 있어 빅테크 기업들이 긴장하고 있습니다. 네이버와 카카오를 포함한 한국 기업들도 EU 사용자 데이터를 다루는 경우 즉각적인 대응 체계를 갖추어야 하는 상황입니다.",
+      "sourceName": "Financial Times",
+      "sourceUrl": "https://www.ft.com"
+    },
+    {
+      "order": 7,
+      "title": "Anthropic 시리즈 G 라운드, 기업가치 600억 달러",
+      "summary": "Anthropic이 시리즈 G 라운드를 마감하며 기업가치를 600억 달러로 평가받았습니다. 기존 투자자인 구글과 아마존이 추가 출자에 참여하였고, 신규로 사우디 PIF가 들어온 것으로 확인되었습니다. Claude의 엔터프라이즈 매출이 연간 50억 달러 페이스에 도달한 것이 이번 라운드 성공의 결정적 요인이 되었습니다.",
+      "sourceName": "The Wall Street Journal",
+      "sourceUrl": "https://www.wsj.com"
+    },
+    {
+      "order": 8,
+      "title": "테슬라, 로보택시 LA 정식 서비스 개시",
+      "summary": "테슬라가 샌프란시스코와 오스틴에 이어 LA에서 로보택시 정식 서비스를 개시하였습니다. 1마일당 0.45달러의 가격으로 경쟁사인 Waymo 대비 약 30% 저렴한 수준입니다. 일론 머스크 CEO는 별도 인터뷰에서 \"올해 안에 도쿄 진출도 가능할 것\"이라고 시사하였습니다.",
+      "sourceName": "TechCrunch",
+      "sourceUrl": "https://techcrunch.com"
+    },
+    {
+      "order": 9,
+      "title": "중국 BYD, 유럽 전기차 판매 폭스바겐 추월",
+      "summary": "중국 BYD가 2026년 1분기 유럽 전기차 시장에서 점유율 11.2%를 기록하며 폭스바겐을 제치고 1위에 올랐습니다. 헝가리와 터키에 새로 지은 공장이 본격 가동되면서 유럽 관세를 효과적으로 우회한 결과입니다. 유럽 시장 비중이 높은 현대차와 기아의 전기차 전략에 직접적인 위협 신호로 받아들여지고 있습니다.",
+      "sourceName": "Nikkei Asia",
+      "sourceUrl": "https://asia.nikkei.com"
+    },
+    {
+      "order": 10,
+      "title": "스트라이프 상장 임박, 핀테크 IPO 시장 재점화",
+      "summary": "스트라이프의 콜리슨 형제가 골드만삭스와 모건스탠리를 IPO 주관사로 선정하며 본격적인 상장 작업에 돌입하였습니다. 평가가치는 약 1,200억 달러 수준이 거론되고 있습니다. 이번 빅딜이 성공할 경우 토스, 카카오페이 등 한국 핀테크 기업들의 IPO 분위기에도 긍정적인 영향을 줄 것으로 예상됩니다.",
+      "sourceName": "Financial Times",
+      "sourceUrl": "https://www.ft.com"
+    }
+  ]
+}

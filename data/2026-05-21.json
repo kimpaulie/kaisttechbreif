@@ -1,0 +1,15 @@
+{
+  "id": "2026-05-21",
+  "volumeNumber": 83,
+  "publishedAt": "2026-05-21T06:30:00+09:00",
+  "dayOfWeek": "목",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "네이버, 사우디에 소버린 AI 클라우드 첫 수출",
+      "summary": "내용 준비중입니다. 편집팀이 곧 상세 요약을 채울 예정입니다. 잠시만 기다려 주시기 바랍니다.",
+      "sourceName": "TBD",
+      "sourceUrl": "https://example.com"
+    }
+  ]
+}

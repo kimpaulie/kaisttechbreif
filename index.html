@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데일리 테크 브리프 · KAIST 경영대학 테크 네트워크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-tint: #f3f1ec;
+    --ink: #0a0a14;
+    --ink-soft: #2d2d3a;
+    --ink-mute: #777783;
+    --rule: #e6e6ea;
+    --rule-soft: #f2f2f5;
+
+    --kaist-blue: #1f4899;
+    --kaist-blue-deep: #15326b;
+    --kaist-blue-light: #2d5fc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ============ HERO HEADER ============ */
+  .hero-brand {
+    background: #ffffff;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-brand-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+  .hero-logo {
+    height: 72px;
+    width: auto;
+    flex-shrink: 0;
+  }
+  .hero-network {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .hero-masthead {
+    background: var(--kaist-blue);
+    color: #fff;
+    padding: 32px 0 28px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-masthead::before {
+    content: "";
+    position: absolute;
+    right: -120px;
+    top: -120px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-masthead-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-title {
+    font-weight: 900;
+    font-size: clamp(40px, 5.5vw, 60px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  /* ============ DATE BAR (파란 영역 안) ============ */
+  .date-bar {
+    padding-top: 0;
+  }
+  .today-date {
+    font-family: 'Inter', 'Pretendard', sans-serif;
+    font-weight: 700;
+    font-size: clamp(20px, 2.4vw, 26px);
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    color: rgba(255,255,255,0.85);
+  }
+  .today-date .day {
+    color: rgba(255,255,255,0.7);
+    margin-left: 8px;
+    font-weight: 700;
+  }
+
+  /* ============ TOC (헤드라인 목차) ============ */
+  .toc {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 32px 8px;
+  }
+  .toc-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .toc-list {
+    list-style: none;
+  }
+  .toc-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 18px;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 8px;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .toc-row:hover {
+    background: var(--rule-soft);
+    padding-left: 14px;
+  }
+  .toc-row:hover .toc-title { color: var(--kaist-blue); }
+  .toc-row:hover .toc-arrow { transform: translateY(2px); color: var(--kaist-blue); }
+  .toc-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--kaist-blue);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .toc-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    transition: color 0.18s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .toc-arrow {
+    color: var(--ink-mute);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+    transition: all 0.18s ease;
+  }
+
+  /* ============ CARDS SECTION DIVIDER ============ */
+  .cards-divider {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    padding: 0 32px 24px;
+  }
+  .cards-divider-label {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--kaist-blue);
+    text-transform: uppercase;
+    border-top: 3px solid var(--ink);
+    padding-top: 18px;
+  }
+
+  /* ============ CARD LIST (전부 펼친 상태) ============ */
+  .card-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .news-card {
+    border-bottom: 1px solid var(--rule);
+    padding: 36px 8px 40px;
+    scroll-margin-top: 24px;
+  }
+  .news-card-head {
+    display: grid;
+    grid-template-columns: 80px 1fr 56px;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+  .news-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--kaist-blue);
+    letter-spacing: -0.03em;
+  }
+  .news-title {
+    font-size: clamp(22px, 2.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .news-source-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--ink-mute);
+    transition: all 0.2s;
+    margin-left: auto;
+  }
+  .news-source-pill:hover {
+    background: var(--kaist-blue);
+    color: #fff;
+  }
+  .news-source-pill svg { width: 22px; height: 22px; }
+  .source-badge {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--kaist-blue);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: 0;
+  }
+  .news-source-pill:hover .source-badge {
+    background: #fff;
+    color: var(--kaist-blue);
+  }
+
+  .news-detail-inner {
+    background: transparent;
+    border-left: 4px solid var(--kaist-blue);
+    padding: 4px 0 4px 24px;
+    margin-left: 104px;
+  }
+  .detail-summary {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    margin-bottom: 24px;
+  }
+  .detail-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .detail-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--kaist-blue);
+    border: 1px solid var(--kaist-blue);
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 3px;
+    letter-spacing: -0.005em;
+    transition: all 0.15s;
+  }
+  .detail-cta:hover {
+    background: var(--kaist-blue);
+    color: #fff;
+  }
+  .detail-cta svg { width: 12px; height: 12px; }
+
+  /* ============ TOP BUTTON IN CARD ============ */
+  .back-to-toc {
+    display: inline-block;
+    margin-top: 18px;
+    margin-left: 104px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .back-to-toc:hover { color: var(--kaist-blue); }
+
+  /* ============ ARCHIVE ============ */
+  .archive {
+    max-width: 1100px;
+    margin: 72px auto 0;
+    padding: 0 32px 72px;
+  }
+  .archive-title {
+    font-weight: 800;
+    font-size: clamp(24px, 3vw, 30px);
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .archive-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    margin-bottom: 18px;
+  }
+  .archive-list {
+    border-top: 2px solid var(--ink);
+  }
+  .archive-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 20px;
+    gap: 20px;
+    align-items: center;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--rule);
+    transition: all 0.18s;
+    cursor: pointer;
+  }
+  .archive-row:hover {
+    background: var(--rule-soft);
+    padding-left: 14px;
+  }
+  .archive-row:hover .archive-headline { color: var(--kaist-blue); }
+  .archive-row:hover .archive-arrow { color: var(--kaist-blue); transform: translateX(4px); }
+  .archive-date {
+    font-family: 'Inter', 'Pretendard', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--kaist-blue);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .archive-date small {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    letter-spacing: 0;
+  }
+  .archive-headline {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s;
+  }
+  .archive-arrow {
+    color: var(--ink-mute);
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.18s;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.7);
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-brand {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .footer-meta {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ============ LOADING / EMPTY ============ */
+  .loading-state {
+    padding: 60px 32px;
+    text-align: center;
+    color: var(--ink-mute);
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .loading-state code {
+    font-family: 'Inter', monospace;
+    background: var(--rule-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 720px) {
+    .hero-brand { padding: 20px 0; }
+    .hero-brand-inner { padding: 0 22px; gap: 12px; }
+    .hero-logo { height: 52px; }
+    .hero-network { font-size: 16px; }
+    .hero-masthead { padding: 32px 0 28px; }
+    .hero-masthead-inner { padding: 0 22px; }
+    .hero-title { margin-bottom: 12px; font-size: clamp(32px, 7.5vw, 44px); }
+    .today-date { font-size: 17px; }
+
+    .toc { padding: 24px 22px 8px; }
+    .toc-row {
+      grid-template-columns: 32px 1fr 14px;
+      gap: 10px;
+      padding: 10px 4px;
+    }
+    .toc-row:hover { padding-left: 10px; }
+    .toc-num { font-size: 15px; }
+    .toc-title { font-size: 13px; }
+
+    .cards-divider { margin-top: 40px; padding: 0 22px 18px; }
+
+    .card-list { padding: 0 22px; }
+    .news-card { padding: 28px 4px 32px; }
+    .news-card-head {
+      grid-template-columns: 56px 1fr 44px;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .news-num { font-size: 32px; }
+    .news-title { font-size: 19px; }
+    .news-source-pill { width: 38px; height: 38px; }
+    .news-source-pill svg { width: 18px; height: 18px; }
+
+    .news-detail-inner {
+      margin-left: 0;
+      padding: 4px 0 4px 18px;
+      border-left-width: 3px;
+    }
+    .detail-summary { font-size: 16px; line-height: 1.7; }
+    .back-to-toc { margin-left: 0; }
+
+    .archive { padding: 0 22px 56px; margin-top: 56px; }
+    .archive-row {
+      grid-template-columns: 1fr 16px;
+      gap: 6px;
+      padding: 14px 4px;
+    }
+    .archive-row:hover { padding-left: 10px; }
+    .archive-date {
+      grid-column: 1 / -1;
+      font-size: 13px;
+      gap: 8px;
+    }
+    .archive-headline { font-size: 13px; grid-column: 1; white-space: normal; }
+    .archive-arrow { grid-column: 2; grid-row: 2; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<header>
+  <div class="hero-brand">
+    <div class="hero-brand-inner">
+      <img class="hero-logo" src="KCB_Logo.png" alt="KAIST College of Business">
+      <div class="hero-network">KAIST 경영대학 테크 네트워크</div>
+    </div>
+  </div>
+  <div class="hero-masthead">
+    <div class="hero-masthead-inner">
+      <h1 class="hero-title">데일리 테크 브리프</h1>
+      <div class="date-bar">
+        <div class="today-date" id="todayDate">—</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- TOC: 헤드라인 목차 (접힌 리스트) -->
+<section class="toc" id="tocSection" aria-label="오늘의 헤드라인">
+  <div class="toc-label" id="tocLabel">오늘의 헤드라인</div>
+  <ul class="toc-list" id="tocList">
+    <li class="loading-state">브리프를 불러오는 중입니다…</li>
+  </ul>
+</section>
+
+<!-- DIVIDER -->
+<div class="cards-divider" id="cardsDivider" style="display:none;">
+  <div class="cards-divider-label">상세 카드 보기</div>
+</div>
+
+<!-- CARD LIST: 전부 펼친 상태 -->
+<main class="card-list" id="cardList"></main>
+
+<!-- ARCHIVE -->
+<section class="archive">
+  <h2 class="archive-title">지난 날짜 보기</h2>
+  <p class="archive-subtitle">날짜를 누르면 그 날의 브리프를 볼 수 있습니다</p>
+
+  <div class="archive-list" id="archiveList">
+    <div class="loading-state">아카이브를 불러오는 중입니다…</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">KAIST 경영대학 테크 네트워크</div>
+    <div class="footer-meta">© 2026 데일리 테크 브리프 편집팀 및 Agent</div>
+  </div>
+</footer>
+
+<!-- SVG icon templates -->
+<template id="icon-external">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+</template>
+<template id="icon-arrow">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+</template>
+
+<script>
+  /**
+   * 데일리 테크 브리프
+   * 데이터 운영: data/YYYY-MM-DD.json 파일만 추가하면 자동 인식
+   *   - 인덱스 파일 불필요
+   *   - 오늘 날짜 기준 거꾸로 LOOKBACK_DAYS일 스캔
+   */
+  const DATA_DIR = 'data';
+  const LOOKBACK_DAYS = 45;     // 오늘 기준 거슬러 스캔할 일수
+  const ARCHIVE_SHOW = 5;       // 아카이브에 노출할 최대 개수
+
+  function esc(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function formatDate(id) { return id.replaceAll('-', '.'); }
+
+  // 후보 날짜 ID 목록 (KST 기준, 오늘부터 거꾸로)
+  function candidateIds(days = LOOKBACK_DAYS) {
+    const now = new Date();
+    // KST 보정 (UTC+9)
+    const kst = new Date(now.getTime() + (9 * 60 - now.getTimezoneOffset()) * 60 * 1000);
+    const out = [];
+    for (let i = 0; i < days; i++) {
+      const d = new Date(kst);
+      d.setUTCDate(d.getUTCDate() - i);
+      out.push(`${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())}`);
+    }
+    return out;
+  }
+
+  async function fetchEdition(id) {
+    const res = await fetch(`${DATA_DIR}/${id}.json`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${id} not found`);
+    return res.json();
+  }
+
+  // 발행분 자동 탐색: 모든 후보를 병렬 fetch, 성공한 것만 최신순 정렬
+  async function discoverEditions() {
+    const ids = candidateIds();
+    const results = await Promise.allSettled(ids.map(id => fetchEdition(id)));
+    const found = results
+      .map((r, idx) => ({ id: ids[idx], status: r.status, value: r.value }))
+      .filter(r => r.status === 'fulfilled')
+      .map(r => r.value)
+      .sort((a, b) => b.id.localeCompare(a.id));
+    return found;
+  }
+
+  function renderDateBar(edition) {
+    document.getElementById('todayDate').innerHTML =
+      `${esc(formatDate(edition.id))}<span class="day">${esc(edition.dayOfWeek)}요일</span>`;
+    document.getElementById('tocLabel').textContent =
+      `오늘의 테크 뉴스 ${edition.newsItems.length}`;
+  }
+
+  function renderTOC(edition) {
+    const tocList = document.getElementById('tocList');
+    tocList.innerHTML = '';
+    edition.newsItems.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'toc-row';
+      li.dataset.target = `news-${item.order}`;
+      li.innerHTML = `
+        <div class="toc-num">${pad2(item.order)}</div>
+        <div class="toc-title">${esc(item.title)}</div>
+        <div class="toc-arrow">↓</div>
+      `;
+      li.addEventListener('click', () => {
+        const target = document.getElementById(li.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      tocList.appendChild(li);
+    });
+  }
+
+  // 다중 출처 지원: sources 배열 우선, 없으면 sourceName/sourceUrl을 단일 항목으로 변환
+  function getSources(item) {
+    if (Array.isArray(item.sources) && item.sources.length > 0) return item.sources;
+    if (item.sourceUrl) return [{ name: item.sourceName || '원문', url: item.sourceUrl }];
+    return [];
+  }
+
+  function renderCards(edition) {
+    const list = document.getElementById('cardList');
+    list.innerHTML = '';
+    const extSvg = document.getElementById('icon-external').innerHTML;
+    const arrSvg = document.getElementById('icon-arrow').innerHTML;
+
+    edition.newsItems.forEach(item => {
+      const sources = getSources(item);
+      const primary = sources[0];
+
+      const pillHtml = primary
+        ? `<a href="${esc(primary.url)}" target="_blank" rel="noopener" class="news-source-pill" title="원문 새 창에서 보기" aria-label="원문 보기">
+             ${extSvg}
+             ${sources.length > 1 ? `<span class="source-badge">+${sources.length - 1}</span>` : ''}
+           </a>`
+        : '';
+
+      const ctaHtml = sources.length > 0
+        ? `<div class="detail-cta-group">
+             ${sources.map(s => `
+               <a href="${esc(s.url)}" target="_blank" rel="noopener" class="detail-cta">
+                 ${esc(s.name)} ${extSvg}
+               </a>
+             `).join('')}
+           </div>`
+        : '';
+
+      const card = document.createElement('article');
+      card.className = 'news-card';
+      card.id = `news-${item.order}`;
+      card.innerHTML = `
+        <div class="news-card-head">
+          <div class="news-num">${pad2(item.order)}</div>
+          <div class="news-title">${esc(item.title)}</div>
+          ${pillHtml}
+        </div>
+        <div class="news-detail-inner">
+          <p class="detail-summary">${esc(item.summary)}</p>
+          ${ctaHtml}
+        </div>
+        <a href="#tocSection" class="back-to-toc">↑ 목차로</a>
+      `;
+      list.appendChild(card);
+    });
+    document.getElementById('cardsDivider').style.display = '';
+  }
+
+  function renderArchive(editions, latestId) {
+    const archive = document.getElementById('archiveList');
+    archive.innerHTML = '';
+    const items = editions.filter(e => e.id !== latestId).slice(0, ARCHIVE_SHOW);
+
+    if (items.length === 0) {
+      archive.innerHTML = '<div class="loading-state">아직 지난 호가 없습니다.</div>';
+      return;
+    }
+
+    items.forEach(e => {
+      const headline = (e.newsItems && e.newsItems[0]) ? e.newsItems[0].title : '(헤드라인 없음)';
+      const row = document.createElement('a');
+      row.className = 'archive-row';
+      row.href = `#${e.id}`;
+      row.innerHTML = `
+        <div class="archive-date">${esc(formatDate(e.id))} <small>${esc(e.dayOfWeek)}요일</small></div>
+        <div class="archive-headline">${esc(headline)}</div>
+        <div class="archive-arrow">→</div>
+      `;
+      row.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        renderEdition(e);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      archive.appendChild(row);
+    });
+  }
+
+  function renderEdition(edition) {
+    renderDateBar(edition);
+    renderTOC(edition);
+    renderCards(edition);
+  }
+
+  async function init() {
+    try {
+      const editions = await discoverEditions();
+      if (editions.length === 0) throw new Error('No editions found');
+      const latest = editions[0];
+      renderEdition(latest);
+      renderArchive(editions, latest.id);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('tocList').innerHTML =
+        '<li class="loading-state">발행된 브리프를 찾을 수 없습니다.<br>로컬에서 보실 때는 <code>python3 -m http.server</code> 같은 정적 서버로 실행해 주시기 바랍니다.</li>';
+      document.getElementById('archiveList').innerHTML = '';
+    }
+  }
+
+  init();
+</script>
+
+</body>
+</html>

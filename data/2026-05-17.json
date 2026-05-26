@@ -1,0 +1,15 @@
+{
+  "id": "2026-05-17",
+  "volumeNumber": 79,
+  "publishedAt": "2026-05-17T06:30:00+09:00",
+  "dayOfWeek": "일",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "아마존, 자체 AI 칩 Trainium3 공개… 엔비디아에 도전",
+      "summary": "내용 준비중입니다. 편집팀이 곧 상세 요약을 채울 예정입니다. 잠시만 기다려 주시기 바랍니다.",
+      "sourceName": "TBD",
+      "sourceUrl": "https://example.com"
+    }
+  ]
+}

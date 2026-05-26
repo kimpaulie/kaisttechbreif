@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데일리 테크 브리프 · KAIST 경영대학 테크 네트워크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #0a0a14;
+    --ink-soft: #2d2d3a;
+    --ink-mute: #777783;
+    --rule: #e6e6ea;
+    --rule-soft: #f2f2f5;
+
+    --kaist-blue: #1f4899;
+    --kaist-blue-deep: #15326b;
+    --kaist-blue-light: #2d5fc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ============ HERO HEADER ============ */
+  .hero {
+    background: var(--kaist-blue);
+    color: #fff;
+    padding: 28px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    right: -120px;
+    top: -120px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-top {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .hero-logo {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+  .hero-network {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    color: #fff;
+    margin-bottom: 4px;
+    font-variation-settings: "opsz" 144;
+  }
+
+  /* ============ DATE BAR ============ */
+  .date-bar {
+    border-bottom: 4px solid var(--ink);
+    padding: 32px 0 24px;
+  }
+  .date-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .today-date {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 64px);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .today-date .day {
+    color: var(--kaist-blue);
+  }
+  .today-meta {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink-mute);
+    letter-spacing: -0.005em;
+  }
+
+  /* ============ NEWS LIST ============ */
+  .news-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .news-item {
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.2s ease;
+  }
+  .news-item:hover { background: var(--rule-soft); }
+  .news-item.open { background: var(--rule-soft); }
+
+  .news-head {
+    display: grid;
+    grid-template-columns: 80px 1fr 48px;
+    gap: 24px;
+    align-items: center;
+    padding: 28px 8px;
+    cursor: pointer;
+  }
+  .news-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--kaist-blue);
+    letter-spacing: -0.03em;
+  }
+  .news-title {
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .news-item:hover .news-title { color: var(--kaist-blue); }
+
+  .news-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--ink-mute);
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .icon-btn:hover {
+    background: var(--kaist-blue);
+    color: #fff;
+  }
+  .icon-btn svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s ease;
+  }
+  .news-item.open .chevron svg {
+    transform: rotate(180deg);
+  }
+
+  /* ============ EXPANDED DETAIL ============ */
+  .news-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+  .news-item.open .news-detail {
+    max-height: 600px;
+    padding: 0 8px 32px;
+  }
+  .detail-inner {
+    background: #fff;
+    border-left: 4px solid var(--kaist-blue);
+    padding: 26px 30px;
+    margin-left: 104px;
+  }
+  .detail-summary {
+    font-size: 18px;
+    line-height: 1.75;
+    color: var(--ink-soft);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    margin-bottom: 22px;
+  }
+  .detail-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--kaist-blue);
+    color: #fff;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .detail-cta:hover { background: var(--kaist-blue-deep); }
+  .detail-cta svg { width: 16px; height: 16px; }
+
+  /* ============ ARCHIVE ============ */
+  .archive {
+    max-width: 1100px;
+    margin: 80px auto 0;
+    padding: 0 32px 80px;
+  }
+  .archive-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4.5vw, 44px);
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .archive-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    margin-bottom: 28px;
+  }
+  .archive-list {
+    border-top: 3px solid var(--ink);
+  }
+  .archive-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 24px;
+    gap: 24px;
+    align-items: center;
+    padding: 22px 8px;
+    border-bottom: 1px solid var(--rule);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .archive-row:hover {
+    background: var(--kaist-blue);
+    color: #fff;
+    padding-left: 18px;
+  }
+  .archive-row:hover .archive-date,
+  .archive-row:hover .archive-headline,
+  .archive-row:hover .archive-arrow { color: #fff; }
+  .archive-date {
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--kaist-blue);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .archive-date small {
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    margin-top: 4px;
+    letter-spacing: 0;
+  }
+  .archive-row:hover .archive-date small { color: rgba(255,255,255,0.75); }
+  .archive-headline {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+  .archive-arrow {
+    color: var(--ink-mute);
+    font-size: 20px;
+    font-weight: 700;
+    transition: transform 0.2s;
+  }
+  .archive-row:hover .archive-arrow {
+    transform: translateX(6px);
+  }
+
+  .archive-more {
+    margin-top: 32px;
+    text-align: center;
+  }
+  .archive-more a {
+    display: inline-block;
+    padding: 14px 28px;
+    border: 2px solid var(--ink);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .archive-more a:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.7);
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-brand {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .footer-meta {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 720px) {
+    .hero { padding: 22px 0 28px; }
+    .hero-inner { padding: 0 22px; }
+    .hero-top { gap: 14px; margin-bottom: 16px; }
+    .hero-logo { width: 44px; height: 44px; }
+    .hero-network { font-size: 15px; }
+    
+    .date-bar { padding: 24px 0 18px; }
+    .date-bar-inner { padding: 0 22px; }
+    
+    .news-list { padding: 0 22px; }
+    .news-head {
+      grid-template-columns: 56px 1fr 40px;
+      gap: 14px;
+      padding: 22px 4px;
+    }
+    .news-num { font-size: 32px; }
+    .news-title { font-size: 18px; }
+    .icon-btn { width: 38px; height: 38px; }
+    .icon-btn svg { width: 18px; height: 18px; }
+    
+    .detail-inner {
+      margin-left: 0;
+      padding: 20px 22px;
+      border-left-width: 3px;
+    }
+    .news-item.open .news-detail { padding: 0 4px 24px; }
+    .detail-summary { font-size: 16px; line-height: 1.7; }
+    
+    .archive { padding: 0 22px 60px; margin-top: 60px; }
+    .archive-row {
+      grid-template-columns: 1fr 18px;
+      gap: 8px;
+      padding: 18px 4px;
+    }
+    .archive-row:hover { padding-left: 12px; }
+    .archive-date {
+      grid-column: 1 / -1;
+      font-size: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .archive-date small { display: inline; margin-top: 0; }
+    .archive-headline { font-size: 16px; grid-column: 1; }
+    .archive-arrow { grid-column: 2; grid-row: 2; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO HEADER -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <!-- KAIST 로고 -->
+      <svg class="hero-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="KAIST">
+        <rect x="0" y="0" width="100" height="100" rx="10" fill="#ffffff"/>
+        <path d="M 24 22 L 24 78 L 36 78 L 36 56 L 42 56 L 62 78 L 78 78 L 52 50 L 76 22 L 60 22 L 42 44 L 36 44 L 36 22 Z" 
+              fill="#1f4899"/>
+      </svg>
+      <div class="hero-network">KAIST 경영대학 테크 네트워크</div>
+    </div>
+    <h1 class="hero-title">데일리 테크 브리프</h1>
+  </div>
+</header>
+
+<!-- DATE BAR -->
+<div class="date-bar">
+  <div class="date-bar-inner">
+    <div class="today-date">2026.05.25<span class="day"> 월</span></div>
+    <div class="today-meta">오늘의 테크 뉴스 10</div>
+  </div>
+</div>
+
+<!-- NEWS LIST -->
+<main class="news-list">
+
+  <!-- 01 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">01</div>
+      <div class="news-title">Nvidia, 사상 첫 시가총액 5조 달러 돌파</div>
+      <div class="news-actions">
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          엔비디아가 GTC 기조연설 직후 주가가 4.2% 급등하며 사상 처음으로 시가총액 5조 달러를 돌파하였습니다. 메타, 마이크로소프트, 구글이 연이어 대규모 데이터센터 발주를 발표한 것이 직접적인 배경이 되었습니다. 이번 흐름은 SK하이닉스와 삼성전자가 주도하는 한국 HBM 공급망에도 즉각적인 파급 효과를 주고 있습니다.
+        </p>
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="detail-cta">
+          Financial Times에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 02 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">02</div>
+      <div class="news-title">OpenAI, 한국에 첫 아시아 데이터센터 설립</div>
+      <div class="news-actions">
+        <a href="https://www.reuters.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          샘 올트먼 CEO가 방한 일정 중 약 30억 달러 규모의 한국 데이터센터 투자 계획을 공식 발표하였습니다. 이는 한국 정부가 추진 중인 AI 인프라 보조금 패키지와 직접 연계된 것으로 알려져 있으며, 아시아 지역의 첫 번째 자체 데이터센터입니다. 국내 클라우드 및 전력 인프라 기업들에게 의미 있는 새로운 사업 기회가 열릴 것으로 전망됩니다.
+        </p>
+        <a href="https://www.reuters.com" target="_blank" rel="noopener" class="detail-cta">
+          Reuters에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 03 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">03</div>
+      <div class="news-title">삼성전자, 2nm 파운드리 양산 일정 6개월 앞당겨</div>
+      <div class="news-actions">
+        <a href="https://www.bloomberg.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          삼성전자가 TSMC와의 격차를 줄이기 위해 2nm 파운드리 양산 일정을 당초보다 6개월 앞당기기로 결정하였습니다. 화성 캠퍼스 P4 라인을 2026년 4분기까지 가동한다는 계획이며, 공정 안정화가 핵심 과제로 꼽힙니다. 퀄컴과 엔비디아의 추가 수주 확보 여부가 이번 결정의 성공을 좌우할 가장 중요한 변수입니다.
+        </p>
+        <a href="https://www.bloomberg.com" target="_blank" rel="noopener" class="detail-cta">
+          Bloomberg에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 04 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">04</div>
+      <div class="news-title">애플, Vision Pro 후속 모델 가격 절반으로</div>
+      <div class="news-actions">
+        <a href="https://www.theinformation.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          애플이 Vision Pro의 가격을 절반 수준인 1,799달러로 낮춘 후속 모델을 오는 9월에 출시할 예정입니다. 팀 쿡 CEO는 이번 신제품을 두고 "공간 컴퓨팅 대중화의 원년이 될 것"이라고 언급하였습니다. 부품 단순화와 더불어 한국 및 중국 부품 협력사의 비중을 크게 확대한 것이 가격 인하의 핵심 요인으로 분석됩니다.
+        </p>
+        <a href="https://www.theinformation.com" target="_blank" rel="noopener" class="detail-cta">
+          The Information에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 05 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">05</div>
+      <div class="news-title">쿠팡, 동남아 진출 본격화… 인도네시아 첫 발</div>
+      <div class="news-actions">
+        <a href="https://www.hankyung.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          쿠팡이 인도네시아 현지 물류기업인 J&T와 합작법인을 설립하며 동남아시아 시장에 본격적으로 진출합니다. 김범석 의장은 "한국에서 성공시킨 로켓배송 모델을 그대로 이식할 계획"이라고 밝혔습니다. 동남아 이커머스 시장의 강자인 Sea Group과 Lazada와의 정면 승부가 불가피할 것으로 예상됩니다.
+        </p>
+        <a href="https://www.hankyung.com" target="_blank" rel="noopener" class="detail-cta">
+          한국경제에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 06 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">06</div>
+      <div class="news-title">EU AI Act 본격 시행, 글로벌 컴플라이언스 비상</div>
+      <div class="news-actions">
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          EU AI Act의 고위험 AI 시스템 의무 조항이 오늘부터 본격적으로 발효되었습니다. 규정을 위반할 경우 글로벌 매출의 최대 7%에 해당하는 과징금이 부과될 수 있어 빅테크 기업들이 긴장하고 있습니다. 네이버와 카카오를 포함한 한국 기업들도 EU 사용자 데이터를 다루는 경우 즉각적인 대응 체계를 갖추어야 하는 상황입니다.
+        </p>
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="detail-cta">
+          Financial Times에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 07 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">07</div>
+      <div class="news-title">Anthropic 시리즈 G 라운드, 기업가치 600억 달러</div>
+      <div class="news-actions">
+        <a href="https://www.wsj.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          Anthropic이 시리즈 G 라운드를 마감하며 기업가치를 600억 달러로 평가받았습니다. 기존 투자자인 구글과 아마존이 추가 출자에 참여하였고, 신규로 사우디 PIF가 들어온 것으로 확인되었습니다. Claude의 엔터프라이즈 매출이 연간 50억 달러 페이스에 도달한 것이 이번 라운드 성공의 결정적 요인이 되었습니다.
+        </p>
+        <a href="https://www.wsj.com" target="_blank" rel="noopener" class="detail-cta">
+          The Wall Street Journal에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 08 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">08</div>
+      <div class="news-title">테슬라, 로보택시 LA 정식 서비스 개시</div>
+      <div class="news-actions">
+        <a href="https://techcrunch.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          테슬라가 샌프란시스코와 오스틴에 이어 LA에서 로보택시 정식 서비스를 개시하였습니다. 1마일당 0.45달러의 가격으로 경쟁사인 Waymo 대비 약 30% 저렴한 수준입니다. 일론 머스크 CEO는 별도 인터뷰에서 "올해 안에 도쿄 진출도 가능할 것"이라고 시사하였습니다.
+        </p>
+        <a href="https://techcrunch.com" target="_blank" rel="noopener" class="detail-cta">
+          TechCrunch에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 09 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">09</div>
+      <div class="news-title">중국 BYD, 유럽 전기차 판매 폭스바겐 추월</div>
+      <div class="news-actions">
+        <a href="https://asia.nikkei.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          중국 BYD가 2026년 1분기 유럽 전기차 시장에서 점유율 11.2%를 기록하며 폭스바겐을 제치고 1위에 올랐습니다. 헝가리와 터키에 새로 지은 공장이 본격 가동되면서 유럽 관세를 효과적으로 우회한 결과입니다. 유럽 시장 비중이 높은 현대차와 기아의 전기차 전략에 직접적인 위협 신호로 받아들여지고 있습니다.
+        </p>
+        <a href="https://asia.nikkei.com" target="_blank" rel="noopener" class="detail-cta">
+          Nikkei Asia에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <!-- 10 -->
+  <article class="news-item">
+    <div class="news-head" onclick="toggleItem(this)">
+      <div class="news-num">10</div>
+      <div class="news-title">스트라이프 상장 임박, 핀테크 IPO 시장 재점화</div>
+      <div class="news-actions">
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="icon-btn" onclick="event.stopPropagation()" title="원문 보기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <span class="icon-btn chevron" title="펼치기">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </div>
+    </div>
+    <div class="news-detail">
+      <div class="detail-inner">
+        <p class="detail-summary">
+          스트라이프의 콜리슨 형제가 골드만삭스와 모건스탠리를 IPO 주관사로 선정하며 본격적인 상장 작업에 돌입하였습니다. 평가가치는 약 1,200억 달러 수준이 거론되고 있습니다. 이번 빅딜이 성공할 경우 토스, 카카오페이 등 한국 핀테크 기업들의 IPO 분위기에도 긍정적인 영향을 줄 것으로 예상됩니다.
+        </p>
+        <a href="https://www.ft.com" target="_blank" rel="noopener" class="detail-cta">
+          Financial Times에서 원문 읽기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<!-- ARCHIVE -->
+<section class="archive">
+  <h2 class="archive-title">지난 호 보기</h2>
+  <p class="archive-subtitle">날짜를 누르면 그 날의 브리프를 볼 수 있습니다</p>
+
+  <div class="archive-list">
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.24 <small>일요일</small></div>
+      <div class="archive-headline">Microsoft, Copilot 유료 가입자 1억 명 돌파</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.23 <small>토요일</small></div>
+      <div class="archive-headline">SK하이닉스 HBM4 출하 시작, 엔비디아 단독 공급</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.22 <small>금요일</small></div>
+      <div class="archive-headline">메타, Llama 4 멀티모달 모델 전면 오픈소스화</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.21 <small>목요일</small></div>
+      <div class="archive-headline">네이버, 사우디에 소버린 AI 클라우드 첫 수출</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.20 <small>수요일</small></div>
+      <div class="archive-headline">구글, 양자컴퓨터 1,000큐비트 돌파… 상용화 임박</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.19 <small>화요일</small></div>
+      <div class="archive-headline">테슬라 옵티머스 휴머노이드, 공장 양산 라인 투입</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.18 <small>월요일</small></div>
+      <div class="archive-headline">카카오, AI 신사업부 분사… 별도 상장 검토</div>
+      <div class="archive-arrow">→</div>
+    </a>
+    <a href="#" class="archive-row">
+      <div class="archive-date">2026.05.17 <small>일요일</small></div>
+      <div class="archive-headline">아마존, 자체 AI 칩 Trainium3 공개… 엔비디아에 도전</div>
+      <div class="archive-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="archive-more">
+    <a href="#">전체 아카이브 보기</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">KAIST 경영대학 테크 네트워크</div>
+    <div class="footer-meta">© 2026 데일리 테크 브리프 편집팀</div>
+  </div>
+</footer>
+
+<script>
+  function toggleItem(headEl) {
+    const item = headEl.closest('.news-item');
+    const wasOpen = item.classList.contains('open');
+    // 한 번에 하나만 열리도록 (원하시면 이 줄 지우면 다중 열기 가능)
+    document.querySelectorAll('.news-item.open').forEach(el => el.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "id": "2026-05-23",
+  "volumeNumber": 85,
+  "publishedAt": "2026-05-23T06:30:00+09:00",
+  "dayOfWeek": "토",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "SK하이닉스 HBM4 출하 시작, 엔비디아 단독 공급",
+      "summary": "내용 준비중입니다. 편집팀이 곧 상세 요약을 채울 예정입니다. 잠시만 기다려 주시기 바랍니다.",
+      "sourceName": "TBD",
+      "sourceUrl": "https://example.com"
+    }
+  ]
+}

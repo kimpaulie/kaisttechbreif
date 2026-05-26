@@ -1,0 +1,15 @@
+{
+  "id": "2026-05-18",
+  "volumeNumber": 80,
+  "publishedAt": "2026-05-18T06:30:00+09:00",
+  "dayOfWeek": "월",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "카카오, AI 신사업부 분사… 별도 상장 검토",
+      "summary": "내용 준비중입니다. 편집팀이 곧 상세 요약을 채울 예정입니다. 잠시만 기다려 주시기 바랍니다.",
+      "sourceName": "TBD",
+      "sourceUrl": "https://example.com"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "2026-05-22",
+  "volumeNumber": 84,
+  "publishedAt": "2026-05-22T06:30:00+09:00",
+  "dayOfWeek": "금",
+  "newsItems": [
+    {
+      "order": 1,
+      "title": "메타, Llama 4 멀티모달 모델 전면 오픈소스화",
+      "summary": "내용 준비중입니다. 편집팀이 곧 상세 요약을 채울 예정입니다. 잠시만 기다려 주시기 바랍니다.",
+      "sourceName": "TBD",
+      "sourceUrl": "https://example.com"
+    }
+  ]
+}
