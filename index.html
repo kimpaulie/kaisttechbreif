@@ -73,10 +73,17 @@
     color: #fff;
     padding: 32px 0 28px;
     position: relative;
-    overflow: hidden;
     text-align: center;
   }
-  .hero-masthead::before {
+  /* radial decoration: hero 영역 안에 정확히 클립되도록 별도 래퍼로 분리 */
+  .hero-masthead .hero-decoration {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-masthead .hero-decoration::before {
     content: "";
     position: absolute;
     right: -120px;
@@ -84,7 +91,6 @@
     width: 400px;
     height: 400px;
     background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    pointer-events: none;
   }
   .hero-masthead-inner {
     max-width: 1100px;
@@ -93,6 +99,8 @@
     position: relative;
     z-index: 2;
   }
+  /* date-bar는 z-index 더 높여 picker가 다른 섹션을 덮을 수 있게 */
+  .hero-masthead-inner .date-bar { position: relative; z-index: 30; }
   .hero-title {
     font-weight: 900;
     font-size: clamp(40px, 5.5vw, 60px);
@@ -330,17 +338,49 @@
   }
   .detail-cta svg { width: 12px; height: 12px; }
 
-  /* ============ TOP BUTTON IN CARD ============ */
-  .back-to-toc {
-    display: inline-block;
-    margin-top: 18px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--ink-mute);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  /* ============ FLOATING ACTION BUTTONS (우측 하단) ============ */
+  .fab-stack {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 40;
   }
-  .back-to-toc:hover { color: var(--kaist-blue); }
+  .fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: var(--kaist-blue);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(31,72,153,0.35);
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .fab:hover { background: var(--kaist-blue-deep); transform: translateY(-1px); }
+  .fab:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .fab .fab-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .fab .fab-icon svg { width: 14px; height: 14px; }
+  .fab.fab-secondary {
+    background: #fff;
+    color: var(--kaist-blue);
+    border: 1.5px solid var(--kaist-blue);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  .fab.fab-secondary:hover { background: var(--rule-soft); }
 
   /* ============ ARCHIVE ============ */
   .archive {
@@ -540,6 +580,7 @@
     </div>
   </div>
   <div class="hero-masthead">
+    <div class="hero-decoration" aria-hidden="true"></div>
     <div class="hero-masthead-inner">
       <h1 class="hero-title">데일리 테크 브리프</h1>
       <div class="date-bar">
@@ -580,6 +621,22 @@
     <div class="loading-state">아카이브를 불러오는 중입니다…</div>
   </div>
 </section>
+
+<!-- FLOATING ACTION BUTTONS -->
+<div class="fab-stack" id="fabStack">
+  <button type="button" class="fab fab-secondary" id="fabDate" aria-label="다른 날짜 보기">
+    <span class="fab-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </span>
+    <span>다른 날짜</span>
+  </button>
+  <button type="button" class="fab" id="fabToc" aria-label="목차로 이동">
+    <span class="fab-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </span>
+    <span>목차로</span>
+  </button>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -751,7 +808,6 @@
           <p class="detail-summary">${esc(item.summary)}</p>
           ${ctaHtml}
         </div>
-        <a href="#tocSection" class="back-to-toc">↑ 목차로</a>
       `;
       list.appendChild(card);
     });
@@ -869,6 +925,36 @@
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') closeDatePicker();
       });
+
+      // FAB: 목차로 이동
+      document.getElementById('fabToc').addEventListener('click', () => {
+        const toc = document.getElementById('tocSection');
+        if (toc) toc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      // FAB: 다른 날짜 선택 (상단으로 스크롤 후 picker 자동 오픈)
+      document.getElementById('fabDate').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // 스크롤 도착 후 picker 열기
+        setTimeout(() => {
+          const picker = document.getElementById('datePicker');
+          if (picker && picker.hidden) toggleDatePicker();
+        }, 450);
+      });
+
+      // FAB: 목차 영역이 화면에 보일 때는 숨김 (이미 거기 있음)
+      const fab = document.getElementById('fabStack');
+      const toc = document.getElementById('tocSection');
+      const cardList = document.getElementById('cardList');
+      if ('IntersectionObserver' in window && toc && cardList) {
+        const io = new IntersectionObserver(entries => {
+          // cardList가 보일 때만 FAB 노출
+          const cardListEntry = entries.find(e => e.target === cardList);
+          if (cardListEntry) {
+            fab.style.display = cardListEntry.isIntersecting ? '' : 'none';
+          }
+        }, { threshold: 0.05 });
+        io.observe(cardList);
+      }
 
       window.addEventListener('hashchange', onHashChange);
     } catch (err) {
