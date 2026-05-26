@@ -122,11 +122,16 @@
     gap: 6px;
     cursor: pointer;
     user-select: none;
-    padding: 6px 10px;
+    padding: 4px 6px;
     border-radius: 6px;
-    transition: background 0.15s ease;
+    background: transparent;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: color 0.15s ease, opacity 0.15s ease;
   }
-  .today-date:hover { background: rgba(255,255,255,0.1); }
+  .today-date:hover { color: #fff; opacity: 0.95; }
+  .today-date:focus-visible { outline: 2px solid rgba(255,255,255,0.4); outline-offset: 2px; }
   .today-date .day {
     color: rgba(255,255,255,0.7);
     margin-left: 4px;
@@ -178,17 +183,6 @@
     background: var(--kaist-blue);
     color: #fff;
     font-weight: 700;
-  }
-  .coverage-label {
-    margin-top: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: -0.005em;
-  }
-  .coverage-label::before {
-    content: "다룬 기간 · ";
-    color: rgba(255,255,255,0.55);
   }
 
   /* ============ TOC (헤드라인 목차) ============ */
@@ -556,7 +550,6 @@
           </span>
         </button>
         <div class="date-picker" id="datePicker" role="listbox" hidden></div>
-        <div class="coverage-label" id="coverageLabel" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -660,14 +653,6 @@
     const textEl = btn.querySelector('.date-text');
     textEl.innerHTML =
       `${esc(formatDate(edition.id))}<span class="day">${esc(edition.dayOfWeek)}요일</span>`;
-
-    const covEl = document.getElementById('coverageLabel');
-    if (edition.coverage && edition.coverage.label) {
-      covEl.textContent = edition.coverage.label;
-      covEl.style.display = '';
-    } else {
-      covEl.style.display = 'none';
-    }
 
     document.getElementById('tocLabel').textContent =
       `오늘의 테크 뉴스 ${edition.newsItems.length}`;
