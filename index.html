@@ -931,14 +931,10 @@
         const toc = document.getElementById('tocSection');
         if (toc) toc.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
-      // FAB: 다른 날짜 선택 (상단으로 스크롤 후 picker 자동 오픈)
+      // FAB: 다른 날짜 → "지난 날짜 보기" 섹션으로 스크롤
       document.getElementById('fabDate').addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        // 스크롤 도착 후 picker 열기
-        setTimeout(() => {
-          const picker = document.getElementById('datePicker');
-          if (picker && picker.hidden) toggleDatePicker();
-        }, 450);
+        const archive = document.querySelector('.archive');
+        if (archive) archive.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
       // FAB: 목차 영역이 화면에 보일 때는 숨김 (이미 거기 있음)
