@@ -16,6 +16,11 @@ SKILL.md `[8] JSON 파일 작성` 단계의 세부 정의. 이 스키마는 `ind
   "volumeNumber": <int>,
   "publishedAt": "YYYY-MM-DDT06:30:00+09:00",
   "dayOfWeek": "월",
+  "coverage": {
+    "from": "YYYY-MM-DD",
+    "to": "YYYY-MM-DD",
+    "label": "5월 25일 (월)"
+  },
   "newsItems": [ /* 정확히 10개 */ ]
 }
 ```
@@ -25,7 +30,11 @@ SKILL.md `[8] JSON 파일 작성` 단계의 세부 정의. 이 스키마는 `ind
 | `id` | string | 발행 일자. `YYYY-MM-DD` 정확히. 파일명과 동일해야 함 |
 | `volumeNumber` | int | 호 번호. `data/`에서 가장 최근 일자 파일의 `volumeNumber + 1`. 파일 없으면 `1` |
 | `publishedAt` | ISO string | `<id>T06:30:00+09:00` 고정 (발행 시간 06:30 KST) |
-| `dayOfWeek` | string | 한 글자 (`월`, `화`, `수`, `목`, `금`, `토`, `일`). **`요일` 붙이지 않음** — 홈페이지 JS가 "요일"을 자동으로 붙여 렌더링 |
+| `dayOfWeek` | string | 한 글자 (`월`~`일`). 사이트 JS가 "요일"을 자동으로 붙임 |
+| `coverage` | object (옵셔널) | 이 호가 다룬 기간. `references/time-context.md`의 산출물. 기존 일자 JSON엔 없어도 됨 |
+| `coverage.from` | string | 다룬 기간 시작 (`YYYY-MM-DD`) |
+| `coverage.to` | string | 다룬 기간 끝 (`YYYY-MM-DD`) |
+| `coverage.label` | string | 사이트 표시용 한국어 라벨 (예: `"5월 25일 (월)"`, `"5월 22~25일 (금·토·일·월)"`) |
 | `newsItems` | array | 길이 **정확히 10** |
 
 ## 3. newsItem 구조

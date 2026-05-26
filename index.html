@@ -115,6 +115,17 @@
     margin-left: 8px;
     font-weight: 700;
   }
+  .coverage-label {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: -0.005em;
+  }
+  .coverage-label::before {
+    content: "다룬 기간 · ";
+    color: rgba(255,255,255,0.55);
+  }
 
   /* ============ TOC (헤드라인 목차) ============ */
   .toc {
@@ -480,6 +491,7 @@
       <h1 class="hero-title">데일리 테크 브리프</h1>
       <div class="date-bar">
         <div class="today-date" id="todayDate">—</div>
+        <div class="coverage-label" id="coverageLabel" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -581,6 +593,15 @@
   function renderDateBar(edition) {
     document.getElementById('todayDate').innerHTML =
       `${esc(formatDate(edition.id))}<span class="day">${esc(edition.dayOfWeek)}요일</span>`;
+
+    const covEl = document.getElementById('coverageLabel');
+    if (edition.coverage && edition.coverage.label) {
+      covEl.textContent = edition.coverage.label;
+      covEl.style.display = '';
+    } else {
+      covEl.style.display = 'none';
+    }
+
     document.getElementById('tocLabel').textContent =
       `오늘의 테크 뉴스 ${edition.newsItems.length}`;
   }
