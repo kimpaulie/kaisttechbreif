@@ -42,7 +42,11 @@
     background: #ffffff;
     padding: 28px 0;
     border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.15s ease;
   }
+  .hero-brand:hover { background: var(--rule-soft); }
+  .hero-brand:focus-visible { outline: 2px solid var(--kaist-blue); outline-offset: -2px; }
   .hero-brand-inner {
     max-width: 1100px;
     margin: 0 auto;
@@ -101,6 +105,10 @@
   /* ============ DATE BAR (파란 영역 안) ============ */
   .date-bar {
     padding-top: 0;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
   }
   .today-date {
     font-family: 'Inter', 'Pretendard', sans-serif;
@@ -109,10 +117,66 @@
     letter-spacing: -0.015em;
     line-height: 1.1;
     color: rgba(255,255,255,0.85);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
   }
+  .today-date:hover { background: rgba(255,255,255,0.1); }
   .today-date .day {
     color: rgba(255,255,255,0.7);
-    margin-left: 8px;
+    margin-left: 4px;
+    font-weight: 700;
+  }
+  .today-date .chevron {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 6px;
+    color: rgba(255,255,255,0.6);
+    transition: transform 0.18s ease;
+  }
+  .today-date.open .chevron { transform: rotate(180deg); }
+  .today-date .chevron svg { width: 14px; height: 14px; }
+
+  .date-picker {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 8px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+    padding: 8px;
+    min-width: 240px;
+    max-height: 360px;
+    overflow-y: auto;
+    z-index: 20;
+  }
+  .date-picker[hidden] { display: none; }
+  .date-picker-row {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: -0.005em;
+  }
+  .date-picker-row:hover { background: var(--rule-soft); color: var(--kaist-blue); }
+  .date-picker-row.active {
+    background: var(--kaist-blue);
+    color: #fff;
     font-weight: 700;
   }
   .coverage-label {
@@ -214,16 +278,15 @@
     scroll-margin-top: 24px;
   }
   .news-card-head {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 24px;
-    align-items: start;
-    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
   }
   .news-num {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    font-size: 44px;
+    font-size: 36px;
     line-height: 1;
     color: var(--kaist-blue);
     letter-spacing: -0.03em;
@@ -231,15 +294,14 @@
   .news-title {
     font-size: clamp(22px, 2.4vw, 28px);
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.3;
     letter-spacing: -0.02em;
     color: var(--ink);
   }
   .news-detail-inner {
     background: transparent;
-    border-left: 4px solid var(--kaist-blue);
-    padding: 4px 0 4px 24px;
-    margin-left: 104px;
+    padding: 0;
+    margin-left: 0;
   }
   .detail-summary {
     font-size: 18px;
@@ -278,7 +340,6 @@
   .back-to-toc {
     display: inline-block;
     margin-top: 18px;
-    margin-left: 104px;
     font-size: 13px;
     font-weight: 700;
     color: var(--ink-mute);
@@ -446,17 +507,15 @@
     .card-list { padding: 0 22px; }
     .news-card { padding: 28px 4px 32px; }
     .news-card-head {
-      grid-template-columns: 56px 1fr;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 8px;
+      margin-bottom: 16px;
     }
-    .news-num { font-size: 32px; }
+    .news-num { font-size: 28px; }
     .news-title { font-size: 19px; }
 
     .news-detail-inner {
       margin-left: 0;
-      padding: 4px 0 4px 18px;
-      border-left-width: 3px;
+      padding: 0;
     }
     .detail-summary { font-size: 16px; line-height: 1.7; }
     .back-to-toc { margin-left: 0; }
@@ -480,7 +539,7 @@
 
 <!-- HERO HEADER -->
 <header>
-  <div class="hero-brand">
+  <div class="hero-brand" id="heroBrand" role="button" tabindex="0" aria-label="최신 호로 이동">
     <div class="hero-brand-inner">
       <img class="hero-logo" src="KCB_Logo.png" alt="KAIST College of Business">
       <div class="hero-network">KAIST 경영대학 테크 네트워크</div>
@@ -490,7 +549,13 @@
     <div class="hero-masthead-inner">
       <h1 class="hero-title">데일리 테크 브리프</h1>
       <div class="date-bar">
-        <div class="today-date" id="todayDate">—</div>
+        <button type="button" class="today-date" id="todayDate" aria-haspopup="listbox" aria-expanded="false">
+          <span class="date-text">—</span>
+          <span class="chevron" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="date-picker" id="datePicker" role="listbox" hidden></div>
         <div class="coverage-label" id="coverageLabel" style="display:none;"></div>
       </div>
     </div>
@@ -507,7 +572,7 @@
 
 <!-- DIVIDER -->
 <div class="cards-divider" id="cardsDivider" style="display:none;">
-  <div class="cards-divider-label">상세 카드 보기</div>
+  <div class="cards-divider-label">상세 브리프 목록</div>
 </div>
 
 <!-- CARD LIST: 전부 펼친 상태 -->
@@ -591,7 +656,9 @@
   }
 
   function renderDateBar(edition) {
-    document.getElementById('todayDate').innerHTML =
+    const btn = document.getElementById('todayDate');
+    const textEl = btn.querySelector('.date-text');
+    textEl.innerHTML =
       `${esc(formatDate(edition.id))}<span class="day">${esc(edition.dayOfWeek)}요일</span>`;
 
     const covEl = document.getElementById('coverageLabel');
@@ -604,6 +671,40 @@
 
     document.getElementById('tocLabel').textContent =
       `오늘의 테크 뉴스 ${edition.newsItems.length}`;
+  }
+
+  function renderDatePicker(activeId) {
+    const picker = document.getElementById('datePicker');
+    picker.innerHTML = '';
+    _editions.forEach(ed => {
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.className = 'date-picker-row' + (ed.id === activeId ? ' active' : '');
+      row.setAttribute('role', 'option');
+      row.dataset.id = ed.id;
+      row.textContent = `${formatDate(ed.id)} ${ed.dayOfWeek}요일${ed.id === _latestId ? ' · 최신' : ''}`;
+      row.addEventListener('click', () => {
+        closeDatePicker();
+        navigateTo(ed.id);
+      });
+      picker.appendChild(row);
+    });
+  }
+
+  function toggleDatePicker() {
+    const btn = document.getElementById('todayDate');
+    const picker = document.getElementById('datePicker');
+    const opening = picker.hidden;
+    picker.hidden = !opening;
+    btn.classList.toggle('open', opening);
+    btn.setAttribute('aria-expanded', String(opening));
+  }
+  function closeDatePicker() {
+    const btn = document.getElementById('todayDate');
+    const picker = document.getElementById('datePicker');
+    picker.hidden = true;
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
   }
 
   function renderTOC(edition) {
@@ -743,6 +844,7 @@
     if (edition) {
       renderEdition(edition);
       renderArchive(_editions, edition.id);
+      renderDatePicker(edition.id);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -757,6 +859,31 @@
       const initial = (hashId && _editions.find(e => e.id === hashId)) || _editions[0];
       renderEdition(initial);
       renderArchive(_editions, initial.id);
+      renderDatePicker(initial.id);
+
+      // 상단 브랜드 클릭 → 최신호
+      const brand = document.getElementById('heroBrand');
+      const goLatest = () => navigateTo(_latestId);
+      brand.addEventListener('click', goLatest);
+      brand.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goLatest(); }
+      });
+
+      // 날짜 드롭다운 토글
+      const dateBtn = document.getElementById('todayDate');
+      const picker = document.getElementById('datePicker');
+      dateBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        toggleDatePicker();
+      });
+      document.addEventListener('click', e => {
+        if (!picker.hidden && !picker.contains(e.target) && !dateBtn.contains(e.target)) {
+          closeDatePicker();
+        }
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeDatePicker();
+      });
 
       window.addEventListener('hashchange', onHashChange);
     } catch (err) {
